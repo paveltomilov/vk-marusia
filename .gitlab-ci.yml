@@ -6,7 +6,6 @@ variables:
   DEPLOY_PATH: "/var/www/work/${PROJECT_NAME}"
 
 before_script:
-  # Простая проверка наличия переменной
   - |
     if [ -n "$DEPLOY_SSH_PRIVATE_KEY" ]; then
       echo "✅ DEPLOY_SSH_PRIVATE_KEY is set"
@@ -30,20 +29,21 @@ pages:
     - npm run build
     # Старый сервер (резерв)
     - mkdir -p /var/opt/gitlab/gitlab-rails/shared/pages/root/work/$PROJECT_NAME
-    - cp -rv public/* /var/opt/gitlab/gitlab-rails/shared/pages/root/work/$PROJECT_NAME/
+    - cp -rv dist/* /var/opt/gitlab/gitlab-rails/shared/pages/root/work/$PROJECT_NAME/
     # Новый сервер
     - |
       if [ -n "$DEPLOY_SSH_PRIVATE_KEY" ]; then
         echo "🚀 Deploying to new server ${DEPLOY_HOST}..."
         ssh ${DEPLOY_USER}@${DEPLOY_HOST} "mkdir -p ${DEPLOY_PATH}"
-        scp -r public/* ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/
+        scp -r dist/* ${DEPLOY_USER}@${DEPLOY_HOST}:${DEPLOY_PATH}/
+        ssh ${DEPLOY_USER}@${DEPLOY_HOST} "chown -R www-data:www-data ${DEPLOY_PATH} && chmod -R 755 ${DEPLOY_PATH}"
         echo "✅ Deploy completed"
       else
         echo "⚠️ SSH key not configured, skipping deploy to new server"
       fi
   artifacts:
     paths:
-      - public
+      - dist
   only:
     - main
 
