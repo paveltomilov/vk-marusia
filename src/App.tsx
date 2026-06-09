@@ -9,30 +9,45 @@ import "./styles/main.scss";
 
 const LazyMainPage = lazy(() => import("./pages/MainPage/MainPage"));
 const LazyAboutMoviePage = lazy(
-  () => import("./pages/AboutMoviePage/FetchAboutMoviePage")
+  () => import("./pages/AboutMoviePage/FetchAboutMoviePage"),
 );
 const LazyGenresPage = lazy(() => import("./pages/GenresPage/FetchGenresPage"));
 const LazyMoviesByGenrePage = lazy(
-  () => import("./pages/MoviesByGenre/FetchMoviesByGenrePage")
+  () => import("./pages/MoviesByGenre/FetchMoviesByGenrePage"),
 );
 const LazyAccountPage = lazy(
-  () => import("./pages/AccountPage/FetchAccountPage")
+  () => import("./pages/AccountPage/FetchAccountPage"),
 );
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/work/vk-marusia">
       <AuthModalProvider>
         <AuthModal />
         <Header />
         <main>
           <Suspense fallback={<Loader />}>
             <Routes>
-              <Route path="/" element={<LazyMainPage />} />
-              <Route path="/movie/:movieId" element={<LazyAboutMoviePage />} />
-              <Route path="/movie/genres" element={<LazyGenresPage />} />
-              <Route path="/movie" element={<LazyMoviesByGenrePage />} />
-              <Route path="/account" element={<LazyAccountPage />} />
+              <Route
+                path="/"
+                element={<LazyMainPage />}
+              />
+              <Route
+                path="/movie/:movieId"
+                element={<LazyAboutMoviePage />}
+              />
+              <Route
+                path="/movie/genres"
+                element={<LazyGenresPage />}
+              />
+              <Route
+                path="/movie"
+                element={<LazyMoviesByGenrePage />}
+              />
+              <Route
+                path="/account"
+                element={<LazyAccountPage />}
+              />
             </Routes>
           </Suspense>
         </main>
