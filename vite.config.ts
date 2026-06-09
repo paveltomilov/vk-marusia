@@ -5,6 +5,7 @@ import viteImagemin from "vite-plugin-imagemin";
 import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
+  base: "/work/vk-marusia/", // ← ДОБАВИТЬ ЭТУ СТРОКУ!
   plugins: [
     react(),
     svgr(),
